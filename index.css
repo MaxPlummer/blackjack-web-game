@@ -8,7 +8,7 @@
   --clr-red: 0 100% 27%;
   --clr-green: 125 81% 27%;
   --clr-white: 0 0% 100%;
-  --clr-accent: 0 3% 70%;
+  --clr-accent: 0 3% 90%;
 
   /* Font Sizes */
   --fs-900: clamp(5rem, 8vw + 1rem, 9.375rem);
@@ -158,7 +158,8 @@ select {
 
 .play-btn:hover,
 .play-btn:focus-visible {
-  color: hsl(var(--clr-white));
+  outline-color: hsl(var(--clr-black));
+  color: hsl(var(--clr-accent));
   background-color: hsl(var(--clr-red) / 1);
 }
 
@@ -168,7 +169,7 @@ select {
 
 .game-container {
   background-color: hsl(var(--clr-accent));
-  border: 5px dashed hsl(var(--clr-black));
+  border: 5px solid hsl(var(--clr-black));
   border-radius: 10px;
   text-align: center;
   display: grid;
