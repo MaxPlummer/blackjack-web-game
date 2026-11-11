@@ -149,15 +149,12 @@ select {
   font-size: var(--fs-700);
   text-transform: uppercase;
   cursor: pointer;
-}
-
-.play-btn {
   border: 2px solid hsl(var(--clr-black));
   border-radius: 10px;
 }
 
-.play-btn:hover,
-.play-btn:focus-visible {
+.btn:hover,
+.btn:focus-visible {
   outline-color: hsl(var(--clr-black));
   color: hsl(var(--clr-accent));
   background-color: hsl(var(--clr-red) / 1);
