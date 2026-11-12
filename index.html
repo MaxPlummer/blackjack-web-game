@@ -18,18 +18,21 @@
     />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css" />
-    <title>Frontend Mentor | Space tourism website</title>
+    <title>Blackjack</title>
     <script src="index.js" defer></script>
   </head>
   <body>
     <main class="game-container flow">
       <header>
-        <h1 class="header">Blackjack!</h1>
+        <h1 id="title" class="header">Blackjack!</h1>
       </header>
-      <p id="dealer-cards" hidden>Dealer Cards:</p>
-      <p id="player-cards" hidden>Player Cards:</p>
-      <button id="play-btn" class="btn play-btn">Play Game</button>
-      <button class="btn hit-btn" hidden>Hit</button>
+      <p id="dealer-cards" hidden></p>
+      <p id="player-cards" hidden></p>
+      <div class="flex">
+        <button id="hit-btn" class="btn" hidden>Hit</button>
+        <button id="stand-btn" class="btn" hidden>Stand</button>
+        <button id="play-btn" class="btn">Play Game</button>
+      </div>
     </main>
   </body>
 </html>
