@@ -20,11 +20,11 @@ let playerCardsString = "Player's Hand: ";
 // Add listener for play button
 playBtn.addEventListener("click", renderGame);
 hitBtn.addEventListener("click", hit);
+standBtn.addEventListener("click", stand);
 
 // Draw and display cards
 function renderGame() {
   titleEl.textContent = "Let's Play!";
-  // Change play button to reset
   playBtn.setAttribute("hidden", true);
   playBtn.textContent = "Play Again";
   // Dealer start
@@ -61,12 +61,33 @@ function hit() {
     hitBtn.setAttribute("hidden", true);
     standBtn.setAttribute("hidden", true);
     playBtn.removeAttribute("hidden");
+  } else if (playerTotal === 21) {
+    titleEl.textContent = "Blackjack!";
+    hitBtn.setAttribute("hidden", true);
   }
 }
 
 // Handle a stand
 function stand() {
-
+  hitBtn.setAttribute("hidden", true);
+  standBtn.setAttribute("hidden", true);
+  while (dealerTotal < 17) {
+    const card = drawCard();
+    dealerCardsString = dealerCardsString + card + " ";
+    dealerCardsEL.textContent = dealerCardsString;
+    dealerTotal += card;
+  }
+  if (dealerTotal > 21 || dealerTotal < playerTotal) {
+    titleEl.textContent = "You Win!";
+  } else if (dealerTotal > playerTotal) {
+    titleEl.textContent = "Dealer Wins!";
+  } else if (dealerTotal === playerTotal) {
+    titleEl.textContent = "It's a Tie!";
+  }
+  hitBtn.setAttribute("hidden", true);
+  standBtn.setAttribute("hidden", true);
+  playBtn.removeAttribute("hidden");
+  playBtn.removeAttribute("hidden");
 }
 
 // Add up card values
