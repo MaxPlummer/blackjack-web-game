@@ -1,7 +1,9 @@
 // Get elements
 const titleEl = document.getElementById("title");
 const dealerCardsEL = document.getElementById("dealer-cards");
+const dealerTotalEL = document.getElementById("dealer-total");
 const playerCardsEL = document.getElementById("player-cards");
+const playerTotalEL = document.getElementById("player-total");
 const playBtn = document.getElementById("play-btn");
 const hitBtn = document.getElementById("hit-btn");
 const standBtn = document.getElementById("stand-btn");
@@ -11,11 +13,13 @@ let dealerTotal = 0;
 let dealerCard2 = 0;
 let dealerCard1 = 0;
 let dealerCardsString = "Dealer's Hand: ";
+let dealerTotalString = "Total: ";
 // Initialize player card variables
 let playerTotal = 0;
 let playerCard1 = 0;
 let playerCard2 = 0;
 let playerCardsString = "Player's Hand: ";
+let playerTotalString = "Total: ";
 
 // Add listener for play button
 playBtn.addEventListener("click", renderGame);
@@ -25,13 +29,14 @@ standBtn.addEventListener("click", stand);
 // Draw and display cards
 function renderGame() {
   titleEl.textContent = "Let's Play!";
+  dealerTotalEL.setAttribute("hidden", true);
   playBtn.setAttribute("hidden", true);
   playBtn.textContent = "Play Again";
   // Dealer start
   dealerCard1 = drawCard();
   dealerCard2 = drawCard();
   dealerTotal = dealerCard1 + dealerCard2;
-  dealerCardsString = "Dealer's Hand: " + dealerCard1 + " " + dealerCard2 + " ";
+  dealerCardsString = "Dealer's Hand: " + dealerCard1 + " ? ";
   dealerCardsEL.textContent = dealerCardsString;
   dealerCardsEL.removeAttribute("hidden");
   // Player start
@@ -41,6 +46,9 @@ function renderGame() {
   playerCardsString = "Player's Hand: " + playerCard1 + " " + playerCard2 + " ";
   playerCardsEL.textContent = playerCardsString;
   playerCardsEL.removeAttribute("hidden");
+  playerTotalString = "Total: " + playerTotal;
+  playerTotalEL.textContent = playerTotalString;
+  playerTotalEL.removeAttribute("hidden");
   hitBtn.removeAttribute("hidden");
   standBtn.removeAttribute("hidden");
 }
@@ -56,6 +64,8 @@ function hit() {
   playerCardsString = playerCardsString + card + " ";
   playerCardsEL.textContent = playerCardsString;
   playerTotal += card;
+  playerTotalString = "Total: " + playerTotal;
+  playerTotalEL.textContent = playerTotalString;
   if (playerTotal > 21) {
     titleEl.textContent = "You Busted!";
     hitBtn.setAttribute("hidden", true);
@@ -71,11 +81,18 @@ function hit() {
 function stand() {
   hitBtn.setAttribute("hidden", true);
   standBtn.setAttribute("hidden", true);
+  dealerCardsString = dealerCardsString.replace(/\?/, dealerCard2);
+  dealerCardsEL.textContent = dealerCardsString;
+  dealerTotalString = "Total: " + dealerTotal;
+  dealerTotalEL.textContent = dealerTotalString;
+  dealerTotalEL.removeAttribute("hidden");
   while (dealerTotal < 17) {
     const card = drawCard();
     dealerCardsString = dealerCardsString + card + " ";
     dealerCardsEL.textContent = dealerCardsString;
     dealerTotal += card;
+    dealerTotalString = "Total: " + dealerTotal;
+    dealerTotalEL.textContent = dealerTotalString;
   }
   if (dealerTotal > 21 || dealerTotal < playerTotal) {
     titleEl.textContent = "You Win!";
