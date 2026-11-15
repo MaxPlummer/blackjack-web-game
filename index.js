@@ -33,14 +33,18 @@ function renderGame() {
   playBtn.setAttribute("hidden", true);
   playBtn.textContent = "Play Again";
   // Dealer start
+  dealerTotal = 0;
   dealerCard1 = drawCard();
+  dealerTotal += dealerCard1;
   dealerCard2 = drawCard();
   dealerTotal = dealerCard1 + dealerCard2;
   dealerCardsString = "Dealer's Hand: " + dealerCard1 + " ? ";
   dealerCardsEL.textContent = dealerCardsString;
   dealerCardsEL.removeAttribute("hidden");
   // Player start
+  playerTotal = 0;
   playerCard1 = drawCard();
+  playerTotal += playerCard1;
   playerCard2 = drawCard();
   playerTotal = playerCard1 + playerCard2;
   playerCardsString = "Player's Hand: " + playerCard1 + " " + playerCard2 + " ";
@@ -51,11 +55,16 @@ function renderGame() {
   playerTotalEL.removeAttribute("hidden");
   hitBtn.removeAttribute("hidden");
   standBtn.removeAttribute("hidden");
+  if (playerTotal === 21) {
+    titleEl.textContent = "Blackjack!";
+    hitBtn.setAttribute("hidden", true);
+  }
 }
 
 // Draw a card
 function drawCard() {
-  return Math.floor(Math.random() * 10) + 1;
+  const card = Math.floor(Math.random() * 10) + 1
+  return ace(card);
 }
 
 // Handle a hit
@@ -105,6 +114,15 @@ function stand() {
   standBtn.setAttribute("hidden", true);
   playBtn.removeAttribute("hidden");
   playBtn.removeAttribute("hidden");
+}
+
+// Check for Aces
+function ace(card) {
+  if (card === 1 && (playerTotal + 11) <= 21) {
+    return 11;
+  } else {
+    return card;
+  }
 }
 
 // Add up card values
