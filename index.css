@@ -6,7 +6,7 @@
   /* Colors */
   --clr-black: 0 0% 0%;
   --clr-red: 0 100% 27%;
-  --clr-green: 125 81% 27%;
+  --clr-green: 150 90% 23%;
   --clr-white: 0 0% 100%;
   --clr-accent: 0 3% 90%;
 
@@ -73,6 +73,15 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0;
+}
+
+@media (max-width: 30em) {
+  body {
+    background-size: 100vh;
+    min-height: 0;
+    margin-top: 6rem;
+  }
 }
 
 /* make images easier to work with */
