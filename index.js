@@ -7,6 +7,7 @@ const playerTotalEL = document.getElementById("player-total");
 const playBtn = document.getElementById("play-btn");
 const hitBtn = document.getElementById("hit-btn");
 const standBtn = document.getElementById("stand-btn");
+const chipsEl = document.getElementById("chips");
 
 // Initialize dealer variables
 let dealerTotal = 0;
@@ -22,6 +23,8 @@ let playerCard2 = 0;
 let playerAce = false;
 let playerCardsString = "Player's Hand: ";
 let playerTotalString = "Total: ";
+let chips = 1000;
+let chipsString = "Chips: " + chips;
 
 // Add listener for buttons
 playBtn.addEventListener("click", renderGame);
@@ -30,6 +33,8 @@ standBtn.addEventListener("click", stand);
 
 // Draw and display cards
 function renderGame() {
+  chipsEl.textContent = chipsString;
+  show(chipsEl);
   titleEl.textContent = "Let's Play!";
   hide(dealerTotalEL);
   hide(playBtn);
