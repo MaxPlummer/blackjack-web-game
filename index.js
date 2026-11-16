@@ -12,12 +12,14 @@ const standBtn = document.getElementById("stand-btn");
 let dealerTotal = 0;
 let dealerCard2 = 0;
 let dealerCard1 = 0;
+let dealerAce = false;
 let dealerCardsString = "Dealer's Hand: ";
 let dealerTotalString = "Total: ";
 // Initialize player card variables
 let playerTotal = 0;
 let playerCard1 = 0;
 let playerCard2 = 0;
+let playerAce = false;
 let playerCardsString = "Player's Hand: ";
 let playerTotalString = "Total: ";
 
@@ -34,18 +36,20 @@ function renderGame() {
   playBtn.textContent = "Play Again";
   // Dealer start
   dealerTotal = 0;
-  dealerCard1 = drawCard();
+  dealerAce = false;
+  dealerCard1 = drawCard("dealer");
   dealerTotal += dealerCard1;
-  dealerCard2 = drawCard();
+  dealerCard2 = drawCard("dealer");
   dealerTotal = dealerCard1 + dealerCard2;
   dealerCardsString = "Dealer's Hand: " + dealerCard1 + " ? ";
   dealerCardsEL.textContent = dealerCardsString;
   dealerCardsEL.removeAttribute("hidden");
   // Player start
   playerTotal = 0;
-  playerCard1 = drawCard();
+  playerAce = false;
+  playerCard1 = drawCard("player");
   playerTotal += playerCard1;
-  playerCard2 = drawCard();
+  playerCard2 = drawCard("player");
   playerTotal = playerCard1 + playerCard2;
   playerCardsString = "Player's Hand: " + playerCard1 + " " + playerCard2 + " ";
   playerCardsEL.textContent = playerCardsString;
@@ -62,17 +66,22 @@ function renderGame() {
 }
 
 // Draw a card
-function drawCard() {
+function drawCard(holder) {
   const card = Math.floor(Math.random() * 10) + 1
-  return ace(card);
+  return ace(card, holder);
 }
 
 // Handle a hit
 function hit() {
   const card = drawCard();
   playerCardsString = playerCardsString + card + " ";
-  playerCardsEL.textContent = playerCardsString;
   playerTotal += card;
+  if (playerAce === true && playerTotal > 21) {
+    playerTotal -= 10;
+    playerCardsString = playerCardsString.replace(/11/, 1);
+    playerAce = false;
+  }
+  playerCardsEL.textContent = playerCardsString;
   playerTotalString = "Total: " + playerTotal;
   playerTotalEL.textContent = playerTotalString;
   if (playerTotal > 21) {
@@ -98,8 +107,13 @@ function stand() {
   while (dealerTotal < 17) {
     const card = drawCard();
     dealerCardsString = dealerCardsString + card + " ";
-    dealerCardsEL.textContent = dealerCardsString;
     dealerTotal += card;
+    if (dealerAce === true && dealerTotal > 21) {
+    dealerTotal -= 10;
+    dealerCardsString = dealerCardsString.replace(/11/, 1);
+    dealerAce = false;
+  }
+    dealerCardsEL.textContent = dealerCardsString;
     dealerTotalString = "Total: " + dealerTotal;
     dealerTotalEL.textContent = dealerTotalString;
   }
@@ -117,11 +131,21 @@ function stand() {
 }
 
 // Check for Aces
-function ace(card) {
-  if (card === 1 && (playerTotal + 11) <= 21) {
-    return 11;
+function ace(card, holder) {
+  if (holder === "player") {
+    if (card === 1 && playerTotal + 11 <= 21) {
+      playerAce = true;
+      return 11;
+    } else {
+      return card;
+    }
   } else {
-    return card;
+    if (card === 1 && dealerTotal + 11 <= 21) {
+      dealerAce = true;
+      return 11;
+    } else {
+      return card;
+    }
   }
 }
 
