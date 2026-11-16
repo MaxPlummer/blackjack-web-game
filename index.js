@@ -8,14 +8,14 @@ const playBtn = document.getElementById("play-btn");
 const hitBtn = document.getElementById("hit-btn");
 const standBtn = document.getElementById("stand-btn");
 
-// Initialize dealer card variables
+// Initialize dealer variables
 let dealerTotal = 0;
 let dealerCard2 = 0;
 let dealerCard1 = 0;
 let dealerAce = false;
 let dealerCardsString = "Dealer's Hand: ";
 let dealerTotalString = "Total: ";
-// Initialize player card variables
+// Initialize player variables
 let playerTotal = 0;
 let playerCard1 = 0;
 let playerCard2 = 0;
@@ -23,7 +23,7 @@ let playerAce = false;
 let playerCardsString = "Player's Hand: ";
 let playerTotalString = "Total: ";
 
-// Add listener for play button
+// Add listener for buttons
 playBtn.addEventListener("click", renderGame);
 hitBtn.addEventListener("click", hit);
 standBtn.addEventListener("click", stand);
@@ -31,8 +31,8 @@ standBtn.addEventListener("click", stand);
 // Draw and display cards
 function renderGame() {
   titleEl.textContent = "Let's Play!";
-  dealerTotalEL.setAttribute("hidden", true);
-  playBtn.setAttribute("hidden", true);
+  hide(dealerTotalEL);
+  hide(playBtn);
   playBtn.textContent = "Play Again";
   // Dealer start
   dealerTotal = 0;
@@ -43,7 +43,7 @@ function renderGame() {
   dealerTotal = dealerCard1 + dealerCard2;
   dealerCardsString = "Dealer's Hand: " + dealerCard1 + " ? ";
   dealerCardsEL.textContent = dealerCardsString;
-  dealerCardsEL.removeAttribute("hidden");
+  show(dealerCardsEL);
   // Player start
   playerTotal = 0;
   playerAce = false;
@@ -53,15 +53,15 @@ function renderGame() {
   playerTotal = playerCard1 + playerCard2;
   playerCardsString = "Player's Hand: " + playerCard1 + " " + playerCard2 + " ";
   playerCardsEL.textContent = playerCardsString;
-  playerCardsEL.removeAttribute("hidden");
+  show(playerCardsEL);
   playerTotalString = "Total: " + playerTotal;
   playerTotalEL.textContent = playerTotalString;
-  playerTotalEL.removeAttribute("hidden");
-  hitBtn.removeAttribute("hidden");
-  standBtn.removeAttribute("hidden");
+  show(playerTotalEL);
+  show(hitBtn);
+  show(standBtn);
   if (playerTotal === 21) {
     titleEl.textContent = "Blackjack!";
-    hitBtn.setAttribute("hidden", true);
+    hide(hitBtn);
   }
 }
 
@@ -73,9 +73,10 @@ function drawCard(holder) {
 
 // Handle a hit
 function hit() {
-  const card = drawCard();
+  const card = drawCard("player");
   playerCardsString = playerCardsString + card + " ";
   playerTotal += card;
+  // An ace 11 becomes 1 if the hand goes over 21
   if (playerAce === true && playerTotal > 21) {
     playerTotal -= 10;
     playerCardsString = playerCardsString.replace(/11/, 1);
@@ -86,28 +87,29 @@ function hit() {
   playerTotalEL.textContent = playerTotalString;
   if (playerTotal > 21) {
     titleEl.textContent = "You Busted!";
-    hitBtn.setAttribute("hidden", true);
-    standBtn.setAttribute("hidden", true);
-    playBtn.removeAttribute("hidden");
+    hide(hitBtn);
+    hide(standBtn);
+    show(playBtn);
   } else if (playerTotal === 21) {
     titleEl.textContent = "Blackjack!";
-    hitBtn.setAttribute("hidden", true);
+    hide(hitBtn);
   }
 }
 
 // Handle a stand
 function stand() {
-  hitBtn.setAttribute("hidden", true);
-  standBtn.setAttribute("hidden", true);
+  hide(hitBtn);
+  hide(standBtn);
   dealerCardsString = dealerCardsString.replace(/\?/, dealerCard2);
   dealerCardsEL.textContent = dealerCardsString;
   dealerTotalString = "Total: " + dealerTotal;
   dealerTotalEL.textContent = dealerTotalString;
-  dealerTotalEL.removeAttribute("hidden");
+  show(dealerTotalEL);
   while (dealerTotal < 17) {
-    const card = drawCard();
+    const card = drawCard("dealer");
     dealerCardsString = dealerCardsString + card + " ";
     dealerTotal += card;
+    // An ace 11 becomes 1 if the hand goes over 21
     if (dealerAce === true && dealerTotal > 21) {
     dealerTotal -= 10;
     dealerCardsString = dealerCardsString.replace(/11/, 1);
@@ -124,15 +126,15 @@ function stand() {
   } else if (dealerTotal === playerTotal) {
     titleEl.textContent = "It's a Tie!";
   }
-  hitBtn.setAttribute("hidden", true);
-  standBtn.setAttribute("hidden", true);
-  playBtn.removeAttribute("hidden");
-  playBtn.removeAttribute("hidden");
+  hide(hitBtn);
+  hide(standBtn);
+  show(playBtn);
 }
 
 // Check for Aces
 function ace(card, holder) {
   if (holder === "player") {
+    // A drawn 1 becomes an 11 if able
     if (card === 1 && playerTotal + 11 <= 21) {
       playerAce = true;
       return 11;
@@ -158,11 +160,12 @@ function sum(...cards) {
   return total;
 }
 
-// Check for a bust
-function checkSum(sum) {
-  if (sum > 21) {
-    return false;
-  } else {
-    return true;
-  }
+// hide elements
+function hide(el) {
+  el.setAttribute("hidden", true);
+}
+
+// show elements
+function show(el) {
+  el.removeAttribute("hidden");
 }
