@@ -65,7 +65,7 @@ body {
   font-size: var(--fs-600);
   color: hsl(var(--clr-black));
   background-color: hsl(var(--clr-green));
-  background-image: url(images/table.png);
+  background-image: url("images/table.png");
   background-size: cover;
   line-height: 1.5;
   min-height: 100vh;
@@ -200,7 +200,7 @@ select {
 }
 
 .chips > span {
-  background-image: url("/images/chip.png");
+  background-image: url("images/chip.png");
   background-size: 30px;
   display: inline-block;
   width: 30px;
